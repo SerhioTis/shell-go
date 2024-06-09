@@ -25,7 +25,11 @@ func pwdCmd() {
 }
 
 func cdCmd(args []string) {
-	err := os.Chdir(args[1])
+	path := args[1]
+	if strings.HasSuffix(path, "~") {
+		path = os.Getenv("HOME") + strings.TrimLeft(path, "~")
+	}
+	err := os.Chdir(path)
 	if err != nil {
 		fmt.Fprint(os.Stdout, "cd: ", args[1], ": No such file or directory\n")
 	}
