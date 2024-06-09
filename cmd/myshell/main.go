@@ -27,7 +27,10 @@ func main() {
 				os.Exit(0)
 			}
 			os.Exit(exitCode)
+		} else if args[0] == "echo" {
+			fmt.Fprint(os.Stdout, strings.Join(args[1:], " "), "\n")
+		} else {
+			fmt.Fprint(os.Stdout, prompt, ": command not found\n")
 		}
-		fmt.Fprint(os.Stdout, prompt, ": command not found\n")
 	}
 }
