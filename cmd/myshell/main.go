@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"strconv"
 	"strings"
@@ -57,7 +58,13 @@ func main() {
 		} else if args[0] == "type" {
 			typeCmd(args)
 		} else {
-			fmt.Fprint(os.Stdout, prompt, ": command not found\n")
+			cmd := exec.Command(args[0], args[1:]...)
+			cmd.Stderr = os.Stderr
+			cmd.Stdout = os.Stdout
+			err := cmd.Run()
+			if err != nil {
+				fmt.Fprint(os.Stdout, prompt, ": command not found\n")
+			}
 		}
 	}
 }
