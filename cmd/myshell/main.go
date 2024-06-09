@@ -19,6 +19,18 @@ func exitCmd(args []string) {
 
 }
 
+func pwdCmd() {
+	wd, _ := os.Getwd()
+	fmt.Fprint(os.Stdout, wd, "\n")
+}
+
+func cdCmd(args []string) {
+	err := os.Chdir(args[1])
+	if err != nil {
+		fmt.Fprint(os.Stdout, "cd: ", args[1], ": No such file or directory\n")
+	}
+}
+
 func typeCmd(args []string) {
 	paths := strings.Split(os.Getenv("PATH"), ":")
 	if args[1] == "exit" || args[1] == "echo" || args[1] == "type" {
@@ -57,6 +69,10 @@ func main() {
 			fmt.Fprint(os.Stdout, strings.Join(args[1:], " "), "\n")
 		} else if args[0] == "type" {
 			typeCmd(args)
+		} else if args[0] == "pwd" {
+			pwdCmd()
+		} else if args[0] == "cd" {
+			cdCmd(args)
 		} else {
 			cmd := exec.Command(args[0], args[1:]...)
 			cmd.Stderr = os.Stderr
